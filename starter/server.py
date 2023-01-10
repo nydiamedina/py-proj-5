@@ -85,10 +85,34 @@ def log_in():
     if not user or user.password != password:
         flash("The email or password you entered is incorrect.")
     else:
-        session["user_email"] = user.email
+        session["email"] = user.email
         flash(f"You're logged in, {user.email}!")
 
     return redirect("/")
+
+
+@app.route("/movies/<movie_id>/ratings", methods=["POST"])
+def create_rating(movie_id):
+    """Create a new rating for the movie."""
+
+    logged_in_email = session.get("email")
+    rating_score = request.form.get("rating")
+
+    if logged_in_email is None:
+        flash("You must log in to rate this movie.")
+    elif not rating_score:
+        flash("Error: no score was selected. Please try again.")
+    else:
+        user = crud.get_user_by_email(logged_in_email)
+        movie = crud.get_movie_by_id(movie_id)
+
+        rating = crud.create_rating(user, movie, int(rating_score))
+        db.session.add(rating)
+        db.session.commit()
+
+        flash(f"You rated this movie {rating_score} out of 5.")
+
+    return redirect(f"/movies/{movie_id}")
 
 
 if __name__ == "__main__":
