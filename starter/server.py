@@ -36,7 +36,7 @@ def show_movie(movie_id):
     return render_template("movie_details.html", movie=movie)
 
 
-@app.route("/users")
+@app.route("/users", methods=["GET"])
 def all_users():
     """View all users."""
 
@@ -52,6 +52,26 @@ def show_user(user_id):
     user = crud.get_user_by_id(user_id)
 
     return render_template("user_profile.html", user=user)
+
+
+@app.route("/users", methods=["POST"])
+def register_user():
+    """Create a new user."""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = crud.get_user_by_email(email)
+
+    if user:
+        flash("Cannot create an account with an existing email. Try again.")
+    else:
+        user = crud.create_user(email, password)
+        db.session.add(user)
+        db.session.commit()
+        flash("Account has been created successfully! Please log in.")
+
+    return redirect("/")
 
 
 if __name__ == "__main__":
