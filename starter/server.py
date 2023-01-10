@@ -64,12 +64,29 @@ def register_user():
     user = crud.get_user_by_email(email)
 
     if user:
-        flash("Cannot create an account with an existing email. Try again.")
+        flash("Cannot create an account with an existing email. Please try again.")
     else:
         user = crud.create_user(email, password)
         db.session.add(user)
         db.session.commit()
         flash("Account has been created successfully! Please log in.")
+
+    return redirect("/")
+
+
+@app.route("/login", methods=["POST"])
+def log_in():
+    """Let user log in."""
+
+    email = request.form.get("email")
+    password = request.form.get("password")
+
+    user = crud.get_user_by_email(email)
+    if not user or user.password != password:
+        flash("The email or password you entered is incorrect.")
+    else:
+        session["user_email"] = user.email
+        flash(f"You're logged in, {user.email}!")
 
     return redirect("/")
 
