@@ -1,22 +1,35 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
-    <title>
-      {% block title %}{% endblock %}
-    </title>
-
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{% block title %}{% endblock %}</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x"
+      crossorigin="anonymous"
+    />
     {% block head %}{% endblock %}
   </head>
   <body>
+    <nav
+      class="navbar sticky-top navbar-light navbar-expand-lg"
+      style="background-color: #f5c518"
+    >
+      <div class="container-fluid">
+        <a class="navbar-brand mb-0 h1" href="/">Watch Movies!</a>
+        <div class="collapse navbar-collapse justify-content-center">
+          <div class="navbar-nav">
+            <a class="nav-link" href="/movies">All Movies</a>
+            <a class="nav-link" href="/users">All Users</a>
+          </div>
+        </div>
+      </div>
+    </nav>
     {% for msg in get_flashed_messages() %}
-      <p class="flash-msg">
-        {{ msg }}
-      </p>
-    {% endfor %}
-    {% block body %}{% endblock %}
-
-    {% block after_body %}{% endblock %}
+    <p class="flash-msg">{{ msg }}</p>
+    {% endfor %} {% block body %}{% endblock %} {% block after_body %}{%
+    endblock %}
   </body>
 </html>

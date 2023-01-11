@@ -1,29 +1,26 @@
-{% extends 'base.html' %}
+{% extends 'base.html' %} {% block title %}{{ movie.title }} - Details{%
+endblock %} {% block body %}
+<div class="container" style="padding: 10px">
+  <h1>{{ movie.title }}</h1>
 
-{% block title %}{{ movie.title }} - Details{% endblock %}
+  <p>{{ movie.overview }}</p>
 
-{% block body %}
-<h1>{{ movie.title }}</h1>
-
-<p>
-  {{ movie.overview }}
-</p>
-
-{% if session.get('user_email') %}
-<h2>Rate movie</h2>
-<form action="/movies/{{ movie.movie_id }}/ratings" method="POST">
-  <p>
-    Rating:
-    <select name="rating">
-      <option value="">Select rating</option>
-      {% for num in range(6) %}
+  {% if session.get('user_email') %}
+  <h2>Rate movie</h2>
+  <form action="/movies/{{ movie.movie_id }}/ratings" method="POST">
+    <p>
+      Rating:
+      <select name="rating">
+        <option value="">Select rating</option>
+        {% for num in range(6) %}
         <option value="{{ num }}">{{ num }}</option>
-      {% endfor %}
-    </select>
-  </p>
-  <p><input type="submit"></p>
-</form>
-{% endif %}
+        {% endfor %}
+      </select>
+    </p>
+    <p><input type="submit" /></p>
+  </form>
+  {% endif %}
 
-<img src="{{ movie.poster_path }}">
+  <img style="height: 600px; width: 400px" src="{{ movie.poster_path }}" />
+</div>
 {% endblock %}
